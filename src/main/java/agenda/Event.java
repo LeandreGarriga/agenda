@@ -47,7 +47,7 @@ public class Event {
         LocalDate start = myStart.toLocalDate();
         
         // Je vérifie si aDay est comprise entre fin est myStart
-        return aDay.isEqual(start) || (aDay.isAfter(start) && aDay.isBefore(fin) || aDay.isEqual(fin));
+        return aDay.isEqual(start) || aDay.isAfter(start) && aDay.isBefore(fin) || aDay.isEqual(fin);
     }
    
     /**

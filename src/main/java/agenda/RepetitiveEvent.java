@@ -9,9 +9,10 @@ import java.time.temporal.ChronoUnit;
  */
 public class RepetitiveEvent extends Event {
     
-    ChronoUnit frequency;
+    ChronoUnit myFrequency;
     LocalDateTime repetition;
     LocalDateTime finT;
+    private final List<LocalDate> exception = new LinkedList<>();
     /**
      * The myTitle of this event
      */
@@ -41,13 +42,14 @@ public class RepetitiveEvent extends Event {
      */
     public RepetitiveEvent(String title, LocalDateTime start, Duration duration, ChronoUnit frequency) {
         super(title, start, duration);
-        // TODO : implémenter cette méthode
+        
         this.myTitle = title;
         this.myStart = start;
         this.myDuration = duration;
-        this.frequency=frequency;
-        this.repetition=start.plus(1, frequency);
-        //throw new UnsupportedOperationException("Pas encore implémenté");
+        this.myFrequency=frequency;
+        
+       
+        
     }
 
     /**
@@ -56,12 +58,8 @@ public class RepetitiveEvent extends Event {
      * @param date the event will not occur at this date
      */
     public void addException(LocalDate date) {
-        // TODO : implémenter cette méthode
-        finT=myStart.plus(myDuration);
-        long j = ChronoUnit.DAYS.between(date, finT);
-        LocalDateTime finIntermediare;
-        //finT.minus(date);
-        //throw new UnsupportedOperationException("Pas encore implémenté");
+        // Ajoute la date exceptionnelle à notre collection d'exception
+        exception.add(date);
     }
 
     /**
@@ -70,7 +68,22 @@ public class RepetitiveEvent extends Event {
      */
     public ChronoUnit getFrequency() {
         // Renvoie la valeur de la frequence
-        return frequency;   
+        return myFrequency;   
     }
 
+    @Override
+    public boolean isInDay(LocalDate aDay){
+        
+        // J'ajoute l'équivalent en jour de ma durée a ma date de début pour ainsi avoir la date de fin
+        LocalDate fin = myStart.plus(100,myFrequency).toLocalDate();
+        LocalDate start = myStart.toLocalDate();
+        if(exception.contains(aDay)){
+            //Si la date est trouvée dans la collection "Exception" alors la methode renvoie False
+            return false;
+        }
+        else{
+            return aDay.isEqual(start) || aDay.isAfter(start) && aDay.isBefore(fin) || aDay.isEqual(fin);
+        }
+    }
+    
 }
