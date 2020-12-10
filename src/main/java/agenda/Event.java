@@ -1,6 +1,7 @@
 package agenda;
 
 import java.time.*;
+import java.time.temporal.ChronoUnit;
 
 public class Event {
 
@@ -40,14 +41,19 @@ public class Event {
      * @return true if the event occurs on that day, false otherwise
      */
     public boolean isInDay(LocalDate aDay) {
-        // TODO : implémenter cette méthode
-        throw new UnsupportedOperationException("Pas encore implémenté");
+        
+        // J'ajoute l'équivalent en jour de ma durée a ma date de début pour ainsi avoir la date de fin
+        LocalDate fin = myStart.plus(myDuration).toLocalDate();
+        LocalDate start = myStart.toLocalDate();
+        
+        // Je vérifie si aDay est comprise entre fin est myStart
+        return aDay.isEqual(start) || (aDay.isAfter(start) && aDay.isBefore(fin) || aDay.isEqual(fin));
     }
    
     /**
      * @return the myTitle
      */
-    public String getTitle() {
+    public String getTitles() {
         return myTitle;
     }
 
@@ -66,6 +72,13 @@ public class Event {
         return myDuration;
     }
 
-   
+    /**
+     *
+     * @return
+     */
+    @Override
+    public String toString(){
+        return myTitle;
+    }
     
 }
